@@ -1,1 +1,13 @@
-info
+QKN-guru/
+├── includes/
+│   ├── custom-post-types.php
+│   ├── custom-taxonomies.php
+│   ├── add-new-system.php
+│   ├── add-new-fix.php
+│   ├── list-all-systems.php
+│   └── list-all-fixes.php
+├── css/
+│   └── styles.css
+├── js/
+│   └── scripts.js
+└── qkn-guru.php

@@ -3,13 +3,11 @@ jQuery(document).ready(function($) {
         alert('New system is being added...');
     });
 
-    $('#systemsTable').DataTable({
-        "pageLength": 10,
-        "lengthMenu": [10, 20, 50, 100, "All"],
-        "order": [[0, "asc"]]
+    $('#add-new-fix').on('submit', function() {
+        alert('New fix is being added...');
     });
-    
-    $('#fixesTable').DataTable({
+
+    $('#systemsTable, #fixesTable').DataTable({
         "pageLength": 10,
         "lengthMenu": [10, 20, 50, 100, "All"],
         "order": [[0, "asc"]]

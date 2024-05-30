@@ -37,7 +37,7 @@
 }
 
 /* Styles for List All Systems Page */
-.systems-wrapper {
+.systems-wrapper, .fixes-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -46,120 +46,36 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-.systems-wrapper h1 {
+.systems-wrapper h1, .fixes-wrapper h1 {
     color: #006c6c;
     text-align: center;
     margin-bottom: 40px;
 }
 
-.systems-table {
+.systems-table, .fixes-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 40px;
 }
 
-.systems-table th,
-.systems-table td {
+.systems-table th, .systems-table td,
+.fixes-table th, .fixes-table td {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
 }
 
-.systems-table th {
+.systems-table th, .fixes-table th {
     background-color: #006c6c;
     color: #ffffff;
 }
 
-.systems-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.systems-table tr:hover {
-    background-color: #f4be34;
-    color: #ffffff;
-}
-
-.pagination {
-    text-align: center;
-}
-
-.pagination a {
-    color: #006c6c;
-    padding: 8px 16px;
-    text-decoration: none;
-    border: 1px solid #ddd;
-    margin: 0 2px;
-}
-
-.pagination a:hover {
-    background-color: #f4be34;
-    color: #ffffff;
-}
-
-.search-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.search-form input,
-.search-form select,
-.search-form button {
-    padding: 8px;
-    margin: 5px;
-}
-
-.search-form button {
-    background-color: #006c6c;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-}
-
-.search-form button:hover {
-    background-color: #f4be34;
-}
-
-/* Styles for List All Fixes Page */
-.fixes-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    color: #212121;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.fixes-wrapper h1 {
-    color: #006c6c;
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.fixes-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 40px;
-}
-
-.fixes-table th,
-.fixes-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.fixes-table th {
-    background-color: #006c6c;
-    color: #ffffff;
-}
-
+.systems-table tr:nth-child(even),
 .fixes-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-.fixes-table tr:hover {
+.systems-table tr:hover, .fixes-table tr:hover {
     background-color: #f4be34;
     color: #ffffff;
 }

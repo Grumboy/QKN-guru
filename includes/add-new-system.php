@@ -1,49 +1,36 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if nonce is valid
-    if (!isset($_POST['qkn_add_system_nonce']) || !wp_verify_nonce($_POST['qkn_add_system_nonce'], 'qkn_add_system')) {
-        die('Invalid nonce');
+function qkn_add_new_system_shortcode() {
+    ob_start();
+    ?>
+    <form id="add-new-system" method="post" action="">
+        <label for="system_title">System Title</label>
+        <input type="text" id="system_title" name="system_title" required>
+
+        <label for="system_description">System Description</label>
+        <textarea id="system_description" name="system_description" required></textarea>
+
+        <button type="submit" name="submit_system">Add System</button>
+    </form>
+    <?php
+    if (isset($_POST['submit_system'])) {
+        $title = sanitize_text_field($_POST['system_title']);
+        $description = sanitize_textarea_field($_POST['system_description']);
+
+        $new_system = array(
+            'post_title'    => $title,
+            'post_content'  => $description,
+            'post_status'   => 'publish',
+            'post_type'     => 'system',
+        );
+
+        $post_id = wp_insert_post($new_system);
+
+        if ($post_id) {
+            echo '<p>System added successfully!</p>';
+        } else {
+            echo '<p>Failed to add system. Please try again.</p>';
+        }
     }
-
-    // Sanitize and prepare post data
-    $post_data = array(
-        'post_title'    => sanitize_text_field($_POST['system_name']),
-        'post_content'  => sanitize_textarea_field($_POST['system_description']),
-        'post_status'   => 'publish',
-        'post_type'     => 'system',
-    );
-
-    // Insert the post into the database
-    $post_id = wp_insert_post($post_data);
-
-    if ($post_id) {
-        echo 'System added successfully!';
-    } else {
-        echo 'Failed to add system!';
-    }
+    return ob_get_clean();
 }
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add New System</title>
-    <?php wp_head(); ?>
-</head>
-<body>
-    <div id="add-new-system">
-        <h1>Add New System</h1>
-        <form action="" method="POST">
-            <?php wp_nonce_field('qkn_add_system', 'qkn_add_system_nonce'); ?>
-            <label for="system_name">System Name</label>
-            <input type="text" id="system_name" name="system_name" required>
-
-            <label for="system_description">System Description</label>
-            <textarea id="system_description" name="system_description" required></textarea>
-
-            <button type="submit">Add System</button>
-        </form>
-    </div>
-    <?php wp_footer(); ?>
-</body>
-</html>
+add_shortcode('add_new_system', 'qkn_add_new_system_shortcode');
