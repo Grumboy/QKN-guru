@@ -1,5 +1,5 @@
 /* Styles for Add New System Form */
-#add-new-system {
+#add-new-system, #add-new-fix {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -7,14 +7,14 @@
     background-color: #f9f9f9;
 }
 
-#add-new-system label {
+#add-new-system label, #add-new-fix label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
 }
 
-#add-new-system input[type="text"],
-#add-new-system textarea {
+#add-new-system input[type="text"], #add-new-system textarea,
+#add-new-fix input[type="text"], #add-new-fix textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 20px;
@@ -22,7 +22,7 @@
     border-radius: 4px;
 }
 
-#add-new-system button {
+#add-new-system button, #add-new-fix button {
     display: inline-block;
     padding: 10px 20px;
     color: #fff;
@@ -32,11 +32,11 @@
     cursor: pointer;
 }
 
-#add-new-system button:hover {
+#add-new-system button:hover, #add-new-fix button:hover {
     background-color: #005177;
 }
 
-/* Styles for List All Systems Page */
+/* Styles for List All Systems and List All Fixes Pages */
 .systems-wrapper, .fixes-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -70,8 +70,7 @@
     color: #ffffff;
 }
 
-.systems-table tr:nth-child(even),
-.fixes-table tr:nth-child(even) {
+.systems-table tr:nth-child(even), .fixes-table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 

@@ -1,36 +1,64 @@
 <?php
-function qkn_add_new_system_shortcode() {
-    ob_start();
+/**
+ * Add New System Page
+ */
+
+function qkn_add_new_system_page() {
     ?>
-    <form id="add-new-system" method="post" action="">
-        <label for="system_title">System Title</label>
-        <input type="text" id="system_title" name="system_title" required>
+    <div class="wrap">
+        <h1>Add New System</h1>
+        <form id="add-new-system" method="POST" action="">
+            <label for="title">Title</label>
+            <input type="text" name="title" required>
 
-        <label for="system_description">System Description</label>
-        <textarea id="system_description" name="system_description" required></textarea>
+            <label for="fqdn">FQDN</label>
+            <input type="text" name="fqdn" required>
 
-        <button type="submit" name="submit_system">Add System</button>
-    </form>
+            <label for="operating_system">Operating System</label>
+            <select name="operating_system">
+                <option value="Windows">Windows</option>
+                <option value="Linux">Linux</option>
+                <option value="macOS">macOS</option>
+            </select>
+
+            <label for="ip_address_lan">IP Address LAN</label>
+            <input type="text" name="ip_address_lan" required>
+
+            <label for="ip_address_wan">IP Address WAN</label>
+            <input type="text" name="ip_address_wan">
+
+            <label for="sites">Sites</label>
+            <?php
+            $sites = get_terms(array('taxonomy' => 'sites', 'hide_empty' => false));
+            if (!empty($sites)) {
+                echo '<select name="sites">';
+                foreach ($sites as $site) {
+                    echo '<option value="' . $site->term_id . '">' . $site->name . '</option>';
+                }
+                echo '</select>';
+            } else {
+                echo '<p>No sites found.</p>';
+            }
+            ?>
+
+            <label for="status">Status</label>
+            <select name="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <label for="system_type">System Type</label>
+            <select name="system_type">
+                <option value="Database server">Database server</option>
+                <option value="Web server">Web server</option>
+                <option value="Application server">Application server</option>
+            </select>
+
+            <label for="documentation_links">Documentation Links</label>
+            <textarea name="documentation_links"></textarea>
+
+            <button type="submit">Add System</button>
+        </form>
+    </div>
     <?php
-    if (isset($_POST['submit_system'])) {
-        $title = sanitize_text_field($_POST['system_title']);
-        $description = sanitize_textarea_field($_POST['system_description']);
-
-        $new_system = array(
-            'post_title'    => $title,
-            'post_content'  => $description,
-            'post_status'   => 'publish',
-            'post_type'     => 'system',
-        );
-
-        $post_id = wp_insert_post($new_system);
-
-        if ($post_id) {
-            echo '<p>System added successfully!</p>';
-        } else {
-            echo '<p>Failed to add system. Please try again.</p>';
-        }
-    }
-    return ob_get_clean();
 }
-add_shortcode('add_new_system', 'qkn_add_new_system_shortcode');
