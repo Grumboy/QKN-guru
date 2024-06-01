@@ -22,11 +22,11 @@ function qkn_guru_enqueue_assets() {
 add_action('admin_enqueue_scripts', 'qkn_guru_enqueue_assets');
 
 // Add admin menus
-add_action('admin_menu', 'qkn_guru_admin_menu');
-
 function qkn_guru_admin_menu() {
     add_menu_page('Add New System', 'Add New System', 'manage_options', 'add-new-system', 'qkn_add_new_system_page', 'dashicons-admin-tools', 6);
     add_submenu_page('add-new-system', 'List All Systems', 'List All Systems', 'manage_options', 'list-all-systems', 'qkn_list_all_systems_page');
     add_menu_page('Add New Fix', 'Add New Fix', 'manage_options', 'add-new-fix', 'qkn_add_new_fix_page', 'dashicons-hammer', 7);
     add_submenu_page('add-new-fix', 'List All Fixes', 'List All Fixes', 'manage_options', 'list-all-fixes', 'qkn_list_all_fixes_page');
 }
+add_action('admin_menu', 'qkn_guru_admin_menu');
+?>

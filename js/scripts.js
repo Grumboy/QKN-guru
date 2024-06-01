@@ -16,18 +16,21 @@ jQuery(document).ready(function($) {
         "order": [[0, "asc"]],
         "dom": 'lfrtip', // This adds the option for search and pagination
         "initComplete": function () {
-            var api = this.api();
-
-            // Apply the search
-            api.columns().every(function () {
+            this.api().columns().every(function () {
                 var column = this;
-                var input = $('<input type="text" placeholder="Search ' + $(column.header()).text() + '" />')
+                var select = $('<select><option value=""></option></select>')
                     .appendTo($(column.footer()).empty())
-                    .on('keyup change clear', function () {
-                        if (column.search() !== this.value) {
-                            column.search(this.value).draw();
-                        }
+                    .on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
                     });
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
             });
         }
     });
