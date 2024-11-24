@@ -4,10 +4,66 @@
  */
 
 function qkn_add_new_fix_page() {
+    // Handle form submission
+    if (isset($_POST['qkn_add_new_fix_nonce']) && wp_verify_nonce($_POST['qkn_add_new_fix_nonce'], 'qkn_add_new_fix')) {
+        // Sanitize and validate inputs
+        $description = sanitize_textarea_field($_POST['description']);
+        $issue_type = sanitize_text_field($_POST['issue_type']);
+        $severity = sanitize_text_field($_POST['severity']);
+        $system_id = intval($_POST['system']);
+        $info = sanitize_textarea_field($_POST['info']);
+        $tags = isset($_POST['tags']) ? array_map('intval', $_POST['tags']) : array();
+
+        // Handle file upload
+        if (!empty($_FILES['attachments']['name'])) {
+            require_once(ABSPATH . 'wp-admin/includes/file.php');
+            require_once(ABSPATH . 'wp-admin/includes/media.php');
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+            $uploaded = media_handle_upload('attachments', 0);
+
+            if (is_wp_error($uploaded)) {
+                echo '<div class="notice notice-error is-dismissible"><p>Error uploading file.</p></div>';
+                $attachment_url = '';
+            } else {
+                $attachment_url = wp_get_attachment_url($uploaded);
+            }
+        } else {
+            $attachment_url = '';
+        }
+
+        // Insert new fix
+        $new_fix = array(
+            'post_title'   => wp_trim_words($description, 5, '...'),
+            'post_type'    => 'fix',
+            'post_status'  => 'publish',
+            'meta_input'   => array(
+                'description'   => $description,
+                'issue_type'    => $issue_type,
+                'severity'      => $severity,
+                'system'        => $system_id,
+                'info'          => $info,
+                'attachments'   => $attachment_url,
+            ),
+        );
+
+        $post_id = wp_insert_post($new_fix);
+
+        if ($post_id && !is_wp_error($post_id)) {
+            // Set tags
+            wp_set_object_terms($post_id, $tags, 'post_tag');
+            echo '<div class="notice notice-success is-dismissible"><p>Fix added successfully.</p></div>';
+        } else {
+            echo '<div class="notice notice-error is-dismissible"><p>Error adding fix.</p></div>';
+        }
+    }
+
     ?>
     <div class="wrap">
         <h1>Add New Fix</h1>
-        <form id="add-new-fix" method="POST" action="">
+        <form id="add-new-fix" method="POST" action="" enctype="multipart/form-data">
+            <?php wp_nonce_field('qkn_add_new_fix', 'qkn_add_new_fix_nonce'); ?>
+
             <label for="description">Description</label>
             <textarea name="description" required></textarea>
 
@@ -31,11 +87,11 @@ function qkn_add_new_fix_page() {
             if (!empty($systems)) {
                 echo '<select name="system">';
                 foreach ($systems as $system) {
-                    echo '<option value="' . $system->ID . '">' . $system->post_title . '</option>';
+                    echo '<option value="' . esc_attr($system->ID) . '">' . esc_html($system->post_title) . '</option>';
                 }
                 echo '</select>';
             } else {
-                echo '<p>No systems found.</p>';
+                echo '<p>No systems found. <a href="' . admin_url('admin.php?page=add-new-system') . '">Add new system</a>.</p>';
             }
             ?>
 
@@ -49,13 +105,13 @@ function qkn_add_new_fix_page() {
             <?php
             $tags = get_terms(array('taxonomy' => 'post_tag', 'hide_empty' => false));
             if (!empty($tags)) {
-                echo '<select name="tags">';
+                echo '<select name="tags[]" multiple>';
                 foreach ($tags as $tag) {
-                    echo '<option value="' . $tag->term_id . '">' . $tag->name . '</option>';
+                    echo '<option value="' . esc_attr($tag->term_id) . '">' . esc_html($tag->name) . '</option>';
                 }
                 echo '</select>';
             } else {
-                echo '<p>No tags found.</p>';
+                echo '<p>No tags found. <a href="' . admin_url('edit-tags.php?taxonomy=post_tag') . '">Add new tag</a>.</p>';
             }
             ?>
 
